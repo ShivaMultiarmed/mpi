@@ -1,4 +1,4 @@
-package mikhail.shell.commis.voyager
+package mikhail.shell.mpi.commis.voyager
 
 class TSPBruteForce(private val dist: Array<IntArray>): TSP {
     val n: Int = dist.size

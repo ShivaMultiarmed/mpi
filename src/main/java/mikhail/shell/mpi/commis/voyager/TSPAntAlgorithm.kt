@@ -1,7 +1,7 @@
-package mikhail.shell.commis.voyager
+package mikhail.shell.mpi.commis.voyager
 
-import java.util.*
 import kotlin.math.pow
+import kotlin.random.Random
 
 class TSPAntAlgorithm(
     val distances: Array<IntArray>
