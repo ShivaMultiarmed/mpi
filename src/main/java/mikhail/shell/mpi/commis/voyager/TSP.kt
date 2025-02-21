@@ -8,7 +8,7 @@ import java.io.PrintStream
 import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) = runBlocking {
-    val output = FileOutputStream("accompanying_folder/lab1/output.txt").use { fos ->
+    val output = FileOutputStream("accompanying_folder/lab1/task2/results.txt").use { fos ->
         PrintStream(fos).use { printStream ->
             for (i in 5..1000) {
                 val time = measureTimeMillis {
@@ -16,7 +16,7 @@ fun main(args: Array<String>) = runBlocking {
                     val tsp: TSP = TSPAntAlgorithm(d)
                     tsp.calculate()
                 }
-                printStream.println("$i: $time")
+                printStream.println("$i\t$time")
             }
         }
     }

@@ -1,4 +1,4 @@
-package mikhail.shell.mpi.commis.voyager
+package mikhail.shell.mpi.common
 
 import javafx.application.Application
 import javafx.scene.Scene
@@ -11,6 +11,7 @@ import javafx.scene.layout.VBox
 import javafx.stage.FileChooser
 import javafx.stage.Stage
 import java.io.File
+import java.util.Collections.max
 
 fun main() {
     Application.launch(PlotGraphMain::class.java)
@@ -42,13 +43,12 @@ class GraphWindow: Stage() {
         }
     }
 
-    private fun convertToSeries(file: File): XYChart.Series<Number, Number> {
-        val data = XYChart.Series<Number, Number>()
+    private fun convertToSeries(file: File): Series<Number, Number> {
+        val data = Series<Number, Number>()
         file.inputStream().use {
             it.bufferedReader().use {
-                var line: String
                 it.forEachLine {
-                    val (x, y) = it.split(": ").map { it.toLong() }
+                    val (x, y) = it.split("\t").map { it.toLong() }
                     data.data.add(XYChart.Data(x, y))
                 }
             }
@@ -57,8 +57,8 @@ class GraphWindow: Stage() {
     }
 
     private fun createLineChart(series: Series<Number, Number>): LineChart<Number, Number> {
-        val yAxis = NumberAxis(0.0, 2500.0, 10.0)
-        val xAxis = NumberAxis(5.0, 1000.0, 100.0)
+        val xAxis = NumberAxis(0.0, max(series.data.map { it.xValue.toInt() }).toDouble(), 1.0)
+        val yAxis = NumberAxis(0.0, max(series.data.map { it.yValue.toInt() }).toDouble(), 100.0)
 
         return LineChart(xAxis, yAxis).also {
             it.data.add(series)

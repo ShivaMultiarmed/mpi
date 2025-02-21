@@ -2,18 +2,31 @@ package mikhail.shell.mpi.johnson
 
 import kotlinx.coroutines.runBlocking
 import mikhail.shell.mpi.common.print
+import java.io.FileOutputStream
+import java.io.PrintWriter
 import kotlin.system.measureTimeMillis
 
 fun main() = runBlocking {
-    val matrix = JohnsonProblemUtils.generateRandomMatrix(10, 10)
-    matrix.print()
-    val solver: JohnsonProblemSolver = JpsBruteForce()
-    val timeExecuted = measureTimeMillis {
-        val (bestSequence, bestMakespan) = solver.solve(matrix)
-        println("Лучшая последовательность обработки деталей: " + bestSequence.joinToString(", ", postfix = "."))
-        println("Лучшее время обработки деталей: $bestMakespan.")
+    val fos = FileOutputStream("accompanying_folder/lab2/task1/results.txt")
+    PrintWriter(fos).use {
+        for (i in 2..10) {
+            val matrix = JohnsonProblemUtils.generateRandomMatrix(i, 2)
+            matrix.print()
+            val solver: JohnsonProblemSolver = JpsBruteForce()
+            val timeExecuted = measureTimeMillis {
+                val (bestSequence, bestMakespan) = solver.solve(matrix)
+                println(
+                    "Лучшая последовательность обработки деталей: " + bestSequence.joinToString(
+                        ", ",
+                        postfix = "."
+                    )
+                )
+                println("Лучшее время обработки деталей: $bestMakespan.")
+            }
+            println("Выполнено за $timeExecuted мс.")
+            it.println("$i\t$timeExecuted")
+        }
     }
-    println("Выполнено за $timeExecuted мс.")
 }
 
 interface JohnsonProblemSolver {

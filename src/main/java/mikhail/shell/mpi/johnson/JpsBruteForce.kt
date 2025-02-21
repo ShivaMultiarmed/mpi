@@ -1,5 +1,7 @@
 package mikhail.shell.mpi.johnson
 
+import mikhail.shell.mpi.common.print
+
 class JpsBruteForce: JohnsonProblemSolver {
     override fun solve(matrix: Array<Array<Int>>): Pair<List<Int>, Int> {
         return findBestSequence(matrix)
@@ -40,6 +42,9 @@ class JpsBruteForce: JohnsonProblemSolver {
                 dp[i][j] = maxOf(dp[i - 1][j], dp[i][j - 1]) + processingTimes[permutation[i]][j]
             }
         }
+
+        dp.print()
+
         // Makespan – время окончания последней детали на последнем станке
         return dp[numJobs - 1][numMachines - 1]
     }
@@ -52,7 +57,7 @@ class JpsBruteForce: JohnsonProblemSolver {
         var bestMakespan = Int.MAX_VALUE
 
         // Перебираем все перестановки
-        for (perm in jobs.permutations()) {
+        for (perm in jobs.permutations().also { it.print() }) {
             val currentMakespan = computeMakespan(perm, processingTimes)
             if (currentMakespan < bestMakespan) {
                 bestMakespan = currentMakespan

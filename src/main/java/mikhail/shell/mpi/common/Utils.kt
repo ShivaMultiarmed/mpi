@@ -17,3 +17,12 @@ fun Array<Array<Int>>.print() {
         println()
     }
 }
+
+fun <T> List<List<T>>.print() {
+    this.forEachIndexed { i, row ->
+        row.forEachIndexed { j, cell ->
+            print("${this[i][j]}\t")
+        }
+        println()
+    }
+}
