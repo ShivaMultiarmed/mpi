@@ -1,18 +1,23 @@
 package mikhail.shell.mpi.johnson
 
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import mikhail.shell.mpi.common.print
 import java.io.FileOutputStream
 import java.io.PrintWriter
 import kotlin.system.measureTimeMillis
 
 fun main() = runBlocking {
-    val fos = FileOutputStream("accompanying_folder/lab2/task1/results.txt")
+    val fos = withContext(Dispatchers.IO) {
+        FileOutputStream("accompanying_folder/lab2/task1/results.txt")
+    }
     PrintWriter(fos).use {
-        for (i in 2..10) {
+        for (i in 2..9) {
             val matrix = JohnsonProblemUtils.generateRandomMatrix(i, 2)
             matrix.print()
             val solver: JohnsonProblemSolver = JpsBruteForce()
+            //val solver: JohnsonProblemSolver = JohnsonAlgorithm()
             val timeExecuted = measureTimeMillis {
                 val (bestSequence, bestMakespan) = solver.solve(matrix)
                 println(
@@ -21,7 +26,7 @@ fun main() = runBlocking {
                         postfix = "."
                     )
                 )
-                println("Лучшее время обработки деталей: $bestMakespan.")
+                //println("Лучшее время обработки деталей: $bestMakespan.")
             }
             println("Выполнено за $timeExecuted мс.")
             it.println("$i\t$timeExecuted")
